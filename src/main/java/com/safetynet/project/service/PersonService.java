@@ -35,4 +35,18 @@ public class PersonService {
 
     public void saveAllPersons(List<Person> lstPerson) {
     }
+
+    /**
+     * Retourne l'ensemble des personnes existantes
+     *
+     * @return Liste des personnes
+     */
+    public Iterable<Person> getAllPersons() {
+        try {
+            return personRepository.findAll();
+        } catch (Exception exception) {
+            logger.error("Erreur lors de la récupération de la liste des personnes : " + exception.getMessage() + " Stack Trace + " + exception.getStackTrace());
+            return null;
+        }
+    }
 }
