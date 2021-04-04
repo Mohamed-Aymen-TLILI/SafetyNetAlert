@@ -1,7 +1,5 @@
 package com.safetynet.project.integration;
 
-import com.safetynet.project.service.FireStationService;
-import com.safetynet.project.service.MedicalRecordService;
 import com.safetynet.project.service.PersonService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

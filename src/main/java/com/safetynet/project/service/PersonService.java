@@ -21,7 +21,7 @@ public class PersonService {
      *
      * @param personList List of person
      */
-    public boolean saveAllPerson(List<Person> personList) {
+    public boolean saveAllPersons(List<Person> personList) {
         if (personList != null){
             try{
                 personRepository.saveAll(personList);
@@ -33,8 +33,6 @@ public class PersonService {
         return false;
     }
 
-    public void saveAllPersons(List<Person> lstPerson) {
-    }
 
     /**
      * Retourne l'ensemble des personnes existantes

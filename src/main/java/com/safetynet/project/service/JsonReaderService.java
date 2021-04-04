@@ -15,7 +15,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.io.FileInputStream;
@@ -42,6 +45,8 @@ public class JsonReaderService {
     @Value("${jsonFilePathData}")
     private String filepath;
 
+    @Autowired
+    private JsonReaderService jsonReaderService;
 
     public void readDataFromJsonFile() {
         logger.debug("Démarrage du chargement du fichier data.json");
@@ -69,6 +74,18 @@ public class JsonReaderService {
         }
 
         logger.debug("Chargement du fichier data.json terminé");
+    }
+
+    @EventListener(ContextRefreshedEvent.class)
+    @Transactional
+    public void onContextRefreshed() {
+        if ( isDatabaseEmpty()) {
+            jsonReaderService.readDataFromJsonFile();
+        }
+    }
+
+    boolean isDatabaseEmpty() {
+        return personService.getAllPersons().equals(0) ;
     }
 
     private List<Person> readListPersonFromJsonObject(JSONObject jsonObject) {

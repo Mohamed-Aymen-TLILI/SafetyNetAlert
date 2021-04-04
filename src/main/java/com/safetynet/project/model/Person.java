@@ -2,57 +2,41 @@ package com.safetynet.project.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @Entity @IdClass(PersonId.class)
 @Table(name="Persons")
 public class Person {
 
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
+
     @Id
-    @NotNull
-    @NotEmpty
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
     @Id
-    @NotNull
-    @NotEmpty
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @NotNull
-    @NotEmpty
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @NotNull
-    @NotEmpty
+    @Column(name = "city", nullable = false)
     private String city;
 
-    @NotNull
-    @NotEmpty
+    @Column(name = "zip", nullable = false)
     private String zip;
 
-    @NotNull
-    @NotEmpty
+    @Column(name = "phone", nullable = false)
     private String phone;
 
-    @NotNull
-    @NotEmpty
+    @Column(name = "email", nullable = false)
     private String email;
 
-
-    public Person (String firstName, String lastName, String address, String city, String zip, String phone, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.city = city;
-        this.zip = zip;
-        this.phone = phone;
-        this.email = email;
-    }
 
 }
