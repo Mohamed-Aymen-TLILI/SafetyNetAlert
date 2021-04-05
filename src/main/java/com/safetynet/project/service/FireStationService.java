@@ -22,15 +22,13 @@ public class FireStationService {
      * @param fireStationsList
      */
 
-    public boolean saveAllFireStations(List<FireStation> fireStationsList) {
+    public void saveAllFireStations(List<FireStation> fireStationsList) {
         if (fireStationsList != null && !fireStationsList.isEmpty()){
             try {
                 fireStationRepository.saveAll(fireStationsList);
-                return true;
             } catch (Exception exception){
                 logger.error("Error when save FireStationList" + exception.getMessage() + ", Stack Trace: " + exception.getStackTrace());
             }
         }
-        return false;
     }
 }

@@ -23,15 +23,13 @@ public class MedicalRecordService {
      * @param medicalRecordList
      */
 
-    public boolean saveAllMedicalRecords(List<MedicalRecords> medicalRecordList){
+    public void saveAllMedicalRecords(List<MedicalRecords> medicalRecordList){
         if (medicalRecordList != null && !medicalRecordList.isEmpty()){
             try {
                 medicalRecordRepository.saveAll(medicalRecordList);
-                return true;
             } catch (Exception exception){
                 logger.error("Error when save list of recordMedical");
             }
         }
-        return false;
     }
 }
