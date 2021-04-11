@@ -14,6 +14,6 @@ public class AlertsApplicationRunnerController {
 
     public void loadInitialData()
     {
-        safetyNetData.initData();
+        safetyNetData.saveDataFromJsonFile();
     }
 }

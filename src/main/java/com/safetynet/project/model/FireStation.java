@@ -1,18 +1,11 @@
 package com.safetynet.project.model;
 
-import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Data
 @Entity
-@Table(name = "Firestations")
 public class FireStation {
 
     private static final Logger logger = LogManager.getLogger(FireStation.class);
@@ -27,7 +20,8 @@ public class FireStation {
     public FireStation() {
     }
 
-    public FireStation(String address, int station) {
+    public FireStation(Long id, String address, int station) {
+        this.id = id;
         this.address = address;
         this.station = station;
     }

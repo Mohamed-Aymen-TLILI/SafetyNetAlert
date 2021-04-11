@@ -1,5 +1,6 @@
 package com.safetynet.project.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.project.model.FireStation;
 import com.safetynet.project.model.MedicalRecords;
@@ -11,125 +12,111 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SafetyNetData {
 
+    @Autowired
+    private PersonService personService;
+
+    @Autowired
+    private MedicalRecordService medicalRecordService;
+
+    @Autowired
+    private FireStationService fireStationService;
+
     private static final Logger logger = LogManager.getLogger(SafetyNetData.class);
+    private final List<Person> lstPerson = new ArrayList<>();
+    private final List<MedicalRecords> lstMedicalRecords = new ArrayList<>();
+    private final List<FireStation> lstFireStation = new ArrayList<>();
 
-    private List<Person> persons = new ArrayList<>();
-    private List<MedicalRecords> medicalRecords = new ArrayList<>();
-    private List<FireStation> fireStations = new ArrayList<>();
+    public void saveDataFromJsonFile() {
+        logger.debug("Démarrage du chargement du fichier data.json");
 
-    public List<Person> readJsonFilePersons() throws IOException, ParseException {
-        JsonReaderService data = new JsonReaderService();
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(data.readDataFromJsonFile());
-        JSONObject jsonObject = (JSONObject) obj;
-        JSONArray listpersons = (JSONArray) jsonObject.get("persons");
-        ObjectMapper mapper = new ObjectMapper();
-        ListIterator iterator = listpersons.listIterator();
-        while (iterator.hasNext()) {
-            persons.add(mapper.readValue(iterator.next().toString(), Person.class));
-        }
-        List<Person> listePerson = new ArrayList<>(persons);
-        return listePerson;
-    }
-
-    public List<FireStation> readJsonFileStation() throws IOException, ParseException {
-        JsonReaderService data = new JsonReaderService();
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(data.readDataFromJsonFile());
-        JSONObject jsonObject = (JSONObject) obj;
-        JSONArray listStations = (JSONArray) jsonObject.get("firestations");
-        ObjectMapper mapper = new ObjectMapper();
-        ListIterator iterator = listStations.listIterator();
-        while (iterator.hasNext()) {
-            fireStations.add(mapper.readValue(iterator.next().toString(), FireStation.class));
-
-        }
-        List<FireStation> fireStation = new ArrayList<>(fireStations);
-        return fireStation;
-    }
-
-
-    public List<MedicalRecords> readJsonFileMedicalrecords() throws IOException, ParseException {
-        JsonReaderService data = new JsonReaderService();
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(data.readDataFromJsonFile());
-        JSONObject jsonObject = (JSONObject) obj;
-        JSONArray listMedical = (JSONArray) jsonObject.get("medicalrecords");
-        ObjectMapper mapper = new ObjectMapper();
-        ListIterator iterator = listMedical.listIterator();
-        while (iterator.hasNext()) {
-            medicalRecords.add(mapper.readValue(iterator.next().toString(), MedicalRecords.class));
-
-        }
-        List<MedicalRecords> listMedical1 = new ArrayList<MedicalRecords>(medicalRecords);
-        return listMedical1;
-    }
-
-    public void initData() {
         try {
-            this.readJsonFileStation();
-            this.readJsonFilePersons();
-            this.readJsonFileMedicalrecords();
-        } catch (IOException e) {
-            logger.error("Error initializing lists persons, firestation and medicalrecords");
-            e.printStackTrace();
-        } catch (ParseException e) {
-            logger.error("Error initializing lists persons, firestation and medicalrecords");
-            e.printStackTrace();
+
+            List<Person> lstPerson = readListPersonFromJsonObject();
+            personService.saveAllPersons(lstPerson);
+
+            List<FireStation> lstFireStation = readListFireStationFromJsonObject();
+            fireStationService.saveAllFireStations(lstFireStation);
+
+            List<MedicalRecords> lstMedicalRecords = readListMedicalRecordFromJsonObject();
+            medicalRecordService.saveAllMedicalRecords(lstMedicalRecords);
+
+
+        } catch (IOException | ParseException exception) {
+            logger.error("Error while parsing input json file : " + exception.getMessage() + " Stack Strace : " + Arrays.toString(exception.getStackTrace()));
         }
+
+        logger.debug("Chargement du fichier data.json terminé");
     }
 
-    public void linkList() {
-        for (Person person : persons) {
-
-            for (FireStation station : fireStations) {
-
-            }
-
-            for (MedicalRecords medicalRecord : medicalRecords) {
-
+    private List<Person> readListPersonFromJsonObject() throws IOException, ParseException {
+        JsonReaderService data = new JsonReaderService();
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(data.readDataFromJsonFile());
+        JSONObject jsonObject = (JSONObject) obj;
+        JSONArray listPersons = (JSONArray) jsonObject.get("persons");
+        ObjectMapper mapper = new ObjectMapper();
+        ListIterator iterator = listPersons.listIterator();
+        while (iterator.hasNext()) {
+            try {
+                lstPerson.add(mapper.readValue(iterator.next().toString(), Person.class));
+            } catch (JsonProcessingException exception) {
+                logger.error("Error while parsing input json file - persons : " + exception.getMessage() + " Stack Strace : " + Arrays.toString(exception.getStackTrace()));
             }
         }
+
+        return lstPerson;
+
     }
 
-    public void dataEmpty() throws IOException, ParseException {
-        persons.clear();
-        fireStations.clear();
-        medicalRecords.clear();
-        this.initData();
-        this.linkList();
+    private List<FireStation> readListFireStationFromJsonObject() throws IOException, ParseException{
+        JsonReaderService data = new JsonReaderService();
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(data.readDataFromJsonFile());
+        JSONObject jsonObject = (JSONObject) obj;
+        JSONArray listPersons = (JSONArray) jsonObject.get("firestations");
+        ObjectMapper mapper = new ObjectMapper();
+        ListIterator iterator = listPersons.listIterator();
+        while (iterator.hasNext()) {
+            try {
+                lstFireStation.add(mapper.readValue(iterator.next().toString(), FireStation.class));
+            } catch (JsonProcessingException exception) {
+                logger.error("Error while parsing input json file - persons : " + exception.getMessage() + " Stack Strace : " + Arrays.toString(exception.getStackTrace()));
+            }
+        }
+
+        return lstFireStation;
+
     }
 
-    public List<Person> getPersons() {
-        return persons;
+    private List<MedicalRecords> readListMedicalRecordFromJsonObject() throws IOException, ParseException{
+        JsonReaderService data = new JsonReaderService();
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(data.readDataFromJsonFile());
+        JSONObject jsonObject = (JSONObject) obj;
+        JSONArray listPersons = (JSONArray) jsonObject.get("medicalrecords");
+        ObjectMapper mapper = new ObjectMapper();
+        ListIterator iterator = listPersons.listIterator();
+        while (iterator.hasNext()) {
+            try {
+                lstMedicalRecords.add(mapper.readValue(iterator.next().toString(), MedicalRecords.class));
+            } catch (JsonProcessingException exception) {
+                logger.error("Error while parsing input json file - persons : " + exception.getMessage() + " Stack Strace : " + Arrays.toString(exception.getStackTrace()));
+            }
+        }
+
+        return lstMedicalRecords;
+
     }
-
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
-    }
-
-    public List<MedicalRecords> getMedicalRecords() {
-        return medicalRecords;
-    }
-
-    public void setMedicalRecords(List<MedicalRecords> medicalRecords) {
-        this.medicalRecords = medicalRecords;
-    }
-
-    public List<FireStation> getFireStations() {
-        return fireStations;
-    }
-
-    public void setFireStations(List<FireStation> fireStations) {
-        this.fireStations = fireStations;
-    }
-
-
 }
+
+
+

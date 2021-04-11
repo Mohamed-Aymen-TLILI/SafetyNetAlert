@@ -1,23 +1,12 @@
 package com.safetynet.project.model;
 
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 
-
-@Data
 @Entity
-@Table(name="MedicalRecords")
 public class MedicalRecords {
 
     private static final Logger logger = LogManager.getLogger(MedicalRecords.class);
@@ -27,10 +16,7 @@ public class MedicalRecords {
     private Long id;
     private String lastName;
     private String firstName;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate birthdate;
+    private String birthdate;
     private List<String> allergies;
     private List<String> medications;
     private int age;
@@ -38,7 +24,8 @@ public class MedicalRecords {
     public MedicalRecords() {
     }
 
-    public MedicalRecords(String lastName, String firstName, LocalDate birthdate, List<String> allergies, List<String> medications, int age) {
+    public MedicalRecords(Long id, String lastName, String firstName, String birthdate, List<String> allergies, List<String> medications, int age) {
+        this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
         this.birthdate = birthdate;
@@ -56,7 +43,7 @@ public class MedicalRecords {
         return firstName;
     }
 
-    public LocalDate getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
@@ -76,7 +63,7 @@ public class MedicalRecords {
         this.firstName = firstName;
     }
 
-    public void setBirthdate(LocalDate birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -96,12 +83,6 @@ public class MedicalRecords {
         this.age = age;
     }
 
-    public void updatemedicalexceptFirstNameLastName(LocalDate birthdate, List<String> allergies, List<String> medications, int age) {
-        this.birthdate = birthdate;
-        this.allergies = allergies;
-        this.medications = medications;
-        this.age = age;
-    }
 
     @Override
     public String toString() {

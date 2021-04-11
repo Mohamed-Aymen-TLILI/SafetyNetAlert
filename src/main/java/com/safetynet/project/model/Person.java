@@ -6,9 +6,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
 
-@Data
+
 @Entity
-@Table(name="Persons")
 public class Person {
 
     private static final Logger logger = LogManager.getLogger(Person.class);
@@ -28,7 +27,8 @@ public class Person {
 
     }
 
-    public Person(String firstName, String lastName, String address, String city, int zip, String phone, String email, FireStation station, MedicalRecords medicalRecords) {
+    public Person(Long id, String firstName, String lastName, String address, String city, int zip, String phone, String email, FireStation station, MedicalRecords medicalRecords) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -36,6 +36,7 @@ public class Person {
         this.zip = zip;
         this.phone = phone;
         this.email = email;
+
 
     }
 
@@ -95,6 +96,7 @@ public class Person {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
 
 
 
