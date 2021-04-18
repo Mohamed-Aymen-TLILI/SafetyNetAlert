@@ -17,7 +17,9 @@ public class MedicalRecords {
     private String lastName;
     private String firstName;
     private String birthdate;
+    @ElementCollection
     private List<String> allergies;
+    @ElementCollection
     private List<String> medications;
     private int age;
 

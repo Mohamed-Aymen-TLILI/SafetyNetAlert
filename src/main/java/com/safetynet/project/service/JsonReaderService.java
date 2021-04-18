@@ -18,12 +18,10 @@ import java.io.IOException;
 public class JsonReaderService {
     private static final Logger logger = LogManager.getLogger(JsonReaderService.class);
 
-    @Value("${jsonFilePathData}")
-    private String filepath;
-
     public String readDataFromJsonFile() throws IOException, ParseException {
+            String fileName = "data.json";
             JSONParser parser = new JSONParser();
-            Object obj = parser.parse(new FileReader(filepath));
+            Object obj = parser.parse(new FileReader(fileName));
             JSONObject jsonObject = (JSONObject) obj;
             String data = JsonIterator.deserialize(jsonObject.toString()).toString();
             return data;
