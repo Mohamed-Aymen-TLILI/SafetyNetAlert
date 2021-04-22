@@ -10,7 +10,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +20,9 @@ import java.util.ListIterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SafetyNetData {
 
     @Autowired
@@ -30,6 +34,7 @@ public class SafetyNetData {
     @Autowired
     private FireStationService fireStationService;
 
+    String fileName = "data.json";
     private static final Logger logger = LogManager.getLogger(SafetyNetData.class);
     private final List<Person> lstPerson = new ArrayList<>();
     private final List<MedicalRecords> lstMedicalRecords = new ArrayList<>();
@@ -58,10 +63,9 @@ public class SafetyNetData {
     }
 
     private List<Person> readListPersonFromJsonObject() throws IOException, ParseException {
-        JsonReaderService data = new JsonReaderService();
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(data.readDataFromJsonFile());
-        JSONObject jsonObject = (JSONObject) obj;
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(this.fileName));
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(inputStreamReader);
         JSONArray listPersons = (JSONArray) jsonObject.get("persons");
         ObjectMapper mapper = new ObjectMapper();
         ListIterator iterator = listPersons.listIterator();
@@ -78,10 +82,9 @@ public class SafetyNetData {
     }
 
     private List<FireStation> readListFireStationFromJsonObject() throws IOException, ParseException{
-        JsonReaderService data = new JsonReaderService();
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(data.readDataFromJsonFile());
-        JSONObject jsonObject = (JSONObject) obj;
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(this.fileName));
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(inputStreamReader);
         JSONArray listPersons = (JSONArray) jsonObject.get("firestations");
         ObjectMapper mapper = new ObjectMapper();
         ListIterator iterator = listPersons.listIterator();
@@ -98,10 +101,9 @@ public class SafetyNetData {
     }
 
     private List<MedicalRecords> readListMedicalRecordFromJsonObject() throws IOException, ParseException{
-        JsonReaderService data = new JsonReaderService();
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(data.readDataFromJsonFile());
-        JSONObject jsonObject = (JSONObject) obj;
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(this.fileName));
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(inputStreamReader);
         JSONArray listPersons = (JSONArray) jsonObject.get("medicalrecords");
         ObjectMapper mapper = new ObjectMapper();
         ListIterator iterator = listPersons.listIterator();

@@ -1,6 +1,7 @@
 package com.safetynet.project.service;
 
 import com.safetynet.project.model.FireStation;
+import com.safetynet.project.model.Person;
 import com.safetynet.project.repository.FireStationRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,4 +32,20 @@ public class FireStationService {
             }
         }
     }
+
+
+    /**
+     * Retourne l'ensemble des stations existantes
+     *
+     * @return Liste des stations
+     */
+    public Iterable<FireStation> getAllStations() {
+        try {
+            return fireStationRepository.findAll();
+        } catch (Exception exception) {
+            logger.error("Erreur lors de la récupération de la liste des stations : " + exception.getMessage() + " Stack Trace + " + exception.getStackTrace());
+            return null;
+        }
+    }
+
 }
