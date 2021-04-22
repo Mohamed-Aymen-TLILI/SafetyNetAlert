@@ -17,13 +17,14 @@ import java.io.IOException;
 @Service
 public class JsonReaderService {
     private static final Logger logger = LogManager.getLogger(JsonReaderService.class);
+    String filepath = "data.json";
 
     public String readDataFromJsonFile() throws IOException, ParseException {
-            String fileName = "data.json";
             JSONParser parser = new JSONParser();
-            Object obj = parser.parse(new FileReader(fileName));
+            Object obj = parser.parse(new FileReader(filepath));
             JSONObject jsonObject = (JSONObject) obj;
             String data = JsonIterator.deserialize(jsonObject.toString()).toString();
             return data;
+
     }
 }

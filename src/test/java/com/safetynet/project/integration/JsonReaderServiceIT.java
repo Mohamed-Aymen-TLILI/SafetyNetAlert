@@ -1,5 +1,6 @@
 package com.safetynet.project.integration;
 
+import com.safetynet.project.service.FireStationService;
 import com.safetynet.project.service.PersonService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -18,10 +19,14 @@ public class JsonReaderServiceIT {
     @Autowired
     private PersonService personService;
 
+    @Autowired
+    private FireStationService fireStationService;
+
     @Test
     public void CheckLoadedDataFromJsonFile()
     {
-        assertThat(personService.getAllPersons()).size().isEqualTo(23);
+        assertThat(fireStationService.getAllStations()).size().isEqualTo(0);
     }
+
 
 }
