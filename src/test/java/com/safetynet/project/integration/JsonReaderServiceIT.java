@@ -25,7 +25,7 @@ public class JsonReaderServiceIT {
     @Test
     public void CheckLoadedDataFromJsonFile()
     {
-        assertThat(fireStationService.getAllStations()).size().isEqualTo(0);
+        assertThat(personService.getAllPersons()).size().isEqualTo(0);
     }
 
 

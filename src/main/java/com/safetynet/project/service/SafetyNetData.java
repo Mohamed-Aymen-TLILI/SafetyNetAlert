@@ -20,6 +20,7 @@ import java.util.ListIterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -34,7 +35,10 @@ public class SafetyNetData {
     @Autowired
     private FireStationService fireStationService;
 
-    String fileName = "data.json";
+    @Value("${data.jsonFilePath}")
+    private String filePath;
+
+
     private static final Logger logger = LogManager.getLogger(SafetyNetData.class);
     private final List<Person> lstPerson = new ArrayList<>();
     private final List<MedicalRecords> lstMedicalRecords = new ArrayList<>();
@@ -63,7 +67,7 @@ public class SafetyNetData {
     }
 
     private List<Person> readListPersonFromJsonObject() throws IOException, ParseException {
-        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(this.fileName));
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(this.filePath));
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(inputStreamReader);
         JSONArray listPersons = (JSONArray) jsonObject.get("persons");
@@ -82,7 +86,7 @@ public class SafetyNetData {
     }
 
     private List<FireStation> readListFireStationFromJsonObject() throws IOException, ParseException{
-        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(this.fileName));
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(this.filePath));
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(inputStreamReader);
         JSONArray listPersons = (JSONArray) jsonObject.get("firestations");
@@ -101,7 +105,7 @@ public class SafetyNetData {
     }
 
     private List<MedicalRecords> readListMedicalRecordFromJsonObject() throws IOException, ParseException{
-        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(this.fileName));
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(this.filePath));
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(inputStreamReader);
         JSONArray listPersons = (JSONArray) jsonObject.get("medicalrecords");
