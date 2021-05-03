@@ -33,4 +33,20 @@ public class MedicalRecordService {
             }
         }
     }
+
+    /**
+     * Retourne l'ensemble des medicals existantes
+     *
+     * @return Liste des medicals
+     */
+
+    public Iterable<MedicalRecords> getAllMedicalRecords(){
+        try {
+            return medicalRecordRepository.findAll();
+        } catch (Exception exception) {
+            logger.error("Erreur lors de la récupération de la liste des medicals : " + exception.getMessage() + " Stack Trace + " + exception.getStackTrace());
+            return null;
+        }
+    }
+
 }
