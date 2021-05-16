@@ -69,10 +69,10 @@ public class PersonController {
     }
 
     @DeleteMapping("/person")
-        public Integer deletePerson(@RequestParam String firstName, @RequestParam String lastName) {
+        public Long deletePerson(@RequestParam String firstName, @RequestParam String lastName) {
         logger.info("Requête Delete sur le endpoint 'person' reçue avec les paramètres firstname :" + firstName + " et lastname : " + lastName + " reçue");
 
-        Integer deleteResult = personService.deletePerson(firstName, lastName);
+        Long deleteResult = personService.deletePerson(firstName, lastName);
         if (deleteResult != null) {
             logger.info("Réponse suite au Delete sur le endpoint 'person' reçue avec les paramètres firstname :" + firstName + " et lastname : " + lastName + " envoyée");
             return deleteResult;
@@ -81,11 +81,12 @@ public class PersonController {
         }
     }
 
-    @GetMapping("/save")
+   /* @GetMapping("/save")
     public void LoadInitialData() throws IOException, ParseException {
         logger.info("Requête Get sur le endpoint 'save' reçue");
         safetyNetData.saveDataFromJsonFile();
         jsonReaderService.readDataFromJsonFile();
         logger.info("Réponse suite à la requête Get sur le endpoint save transmise");
-    }
+    }*/
+
 }

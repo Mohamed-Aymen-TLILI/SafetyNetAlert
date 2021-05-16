@@ -14,8 +14,7 @@ public interface PersonRepository  extends CrudRepository<Person, Long> {
     List<Person> findAllByAddressIgnoreCase(String address);
     List<Person> findAllByCityIgnoreCase(String city);
 
-    @Transactional
-    Integer deletePersonByFirstNameAndLastNameAllIgnoreCase(String firstname, String lastname);
+    long removeByFirstNameAndLastName(String firstName, String lastName);
 }
 
 
