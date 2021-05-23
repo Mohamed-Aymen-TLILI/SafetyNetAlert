@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -35,18 +36,95 @@ public class MedicalRecordService {
     }
 
     /**
-     * Retourne l'ensemble des medicals existantes
+     * Get medical record
      *
-     * @return Liste des medicals
+     * @return medcal record list
      */
 
     public Iterable<MedicalRecords> getAllMedicalRecords(){
         try {
             return medicalRecordRepository.findAll();
         } catch (Exception exception) {
-            logger.error("Erreur lors de la récupération de la liste des medicals : " + exception.getMessage() + " Stack Trace + " + exception.getStackTrace());
+            logger.error("Error while getting a list of medical records  : " + exception.getMessage() + " Stack Trace + " + exception.getStackTrace());
+            return null;
+        }
+    }
+    /**
+     * add a medical recored
+     * @param medicalRecord
+     * @return a medical
+     */
+    public MedicalRecords addMedicalRecord(MedicalRecords medicalRecord) {
+        if (medicalRecord != null) {
+            Optional<MedicalRecords> medicalRecordOptional = this.getMedicalRecordByFirstNameAndLastName(medicalRecord.getFirstName(),medicalRecord.getLastName());
+            if (medicalRecordOptional.isPresent())
+            {
+                logger.error("Error while adding a  exist medical records:");
+                return null;
+            }
+            else {
+                try {
+                    medicalRecordRepository.save(medicalRecord);
+                }
+                catch (Exception exception) {
+                    logger.error("Error while adding a  medical records:" + exception.getMessage() + " StackTrace : " + exception.getStackTrace());
+                    return null;
+                }
+            }
+        }
+        return medicalRecord;
+    }
+
+
+    /**
+     * Update medical records
+     * @param medicalRecord
+     * @return medical records
+     */
+    public MedicalRecords updateMedicalRecord(final MedicalRecords medicalRecord) {
+        if (medicalRecord!=null) {
+            Optional<MedicalRecords> medicalRecordOptional = this.getMedicalRecordByFirstNameAndLastName(medicalRecord.getFirstName(), medicalRecord.getLastName());
+
+            if (medicalRecordOptional.isPresent()) {
+                MedicalRecords medicalRecordToUpdate = medicalRecordOptional.get();
+
+                medicalRecordToUpdate.setMedications(medicalRecord.getMedications());
+                medicalRecordToUpdate.setAllergies(medicalRecord.getAllergies());
+
+                try {
+                    medicalRecordRepository.save(medicalRecordToUpdate);
+                    return medicalRecordToUpdate;
+                } catch (Exception exception) {
+                    logger.error("Error while updating a medical records : " + exception.getMessage() + " StackTrace : " + exception.getStackTrace());
+                    return null;
+                }
+            } else {
+                logger.error("Error while updating a medical records : this person doesen't exist");
+                return null;
+            }
+        }
+        else
+        {
+            logger.error("Error while updating a medical records : null object");
             return null;
         }
     }
 
+
+
+
+    /**
+     * Get medical record by firstName abd lastName
+     * @param firstname
+     * @param lastname
+     * @return medical records if found it
+     */
+    public Optional<MedicalRecords> getMedicalRecordByFirstNameAndLastName(String firstname, String lastname) {
+        try {
+            return medicalRecordRepository.findByFirstNameAndLastNameAllIgnoreCase(firstname, lastname);
+        } catch (Exception exception) {
+            logger.error("Error while getting a list of medical records  : " + exception.getMessage() + " Stack Trace + " + exception.getStackTrace());
+            return null;
+        }
+    }
 }

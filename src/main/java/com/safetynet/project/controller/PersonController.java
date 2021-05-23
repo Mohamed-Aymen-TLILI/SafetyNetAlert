@@ -81,12 +81,12 @@ public class PersonController {
         }
     }
 
-   /* @GetMapping("/save")
+    @GetMapping("/save")
     public void LoadInitialData() throws IOException, ParseException {
         logger.info("Requête Get sur le endpoint 'save' reçue");
         safetyNetData.saveDataFromJsonFile();
         jsonReaderService.readDataFromJsonFile();
         logger.info("Réponse suite à la requête Get sur le endpoint save transmise");
-    }*/
+    }
 
 }
