@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,16 +70,10 @@ public class PersonController {
     }
 
     @DeleteMapping("/person")
-        public Long deletePerson(@RequestParam String firstName, @RequestParam String lastName) {
-        logger.info("Requête Delete sur le endpoint 'person' reçue avec les paramètres firstname :" + firstName + " et lastname : " + lastName + " reçue");
+    @Transactional
+    public void deletePerson(@RequestBody Person person) { logger.info("Requête Delete sur le endpoint 'person' reçue avec les paramètres firstname  reçue");
+        personService.deletePerson(person);
 
-        Long deleteResult = personService.deletePerson(firstName, lastName);
-        if (deleteResult != null) {
-            logger.info("Réponse suite au Delete sur le endpoint 'person' reçue avec les paramètres firstname :" + firstName + " et lastname : " + lastName + " envoyée");
-            return deleteResult;
-        } else {
-            throw new FunctionalException("person.delete.error");
-        }
     }
 
     @GetMapping("/save")

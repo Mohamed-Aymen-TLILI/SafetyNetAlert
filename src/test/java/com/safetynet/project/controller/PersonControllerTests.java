@@ -53,25 +53,4 @@ public class PersonControllerTests {
                 andExpect(MockMvcResultMatchers.status().isOk()).
                 andExpect(jsonPath("$").isArray());
     }
-    @Test
-    public void deletePersonValidTest() throws Exception {
-        Person person = new Person();
-        person.setLastName("myLastName");
-        person.setFirstName("myFirstName");
-        person.setAddress("myAddress");
-        person.setCity("myCity");
-        person.setPhone("myPhone");
-        person.setEmail("myEmail");
-        person.setZip(2);
-
-        when(personServiceMock.deletePerson(person.getFirstName(), person.getLastName())).thenReturn((long) 1);
-
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.delete("/person").
-                contentType(MediaType.APPLICATION_JSON).
-                param("firstname",person.getFirstName()).
-                param("lastname",person.getLastName());
-
-        mockMvc.perform(builder).
-                andExpect(MockMvcResultMatchers.status().isOk());
-    }
 }

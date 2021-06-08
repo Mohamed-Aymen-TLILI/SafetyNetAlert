@@ -125,25 +125,10 @@ public class PersonService {
 
     /**
      * delete one person if exist
-     *  @param firstName of person to delete
-     * @param lastName  of person to delete
+     *  @param person to update
      */
-    public Long deletePerson(String firstName, String lastName) {
-        Optional<Person> personOptional = this.getPersonByFirstNameAndLastName(firstName, lastName);
-        if (personOptional.isPresent()) {
-            try {
-                return personRepository.removeByFirstNameAndLastName(firstName, lastName);
-
-            } catch (Exception exception) {
-                logger.error("error while delete a person :" + exception.getMessage() + " StackTrace : " + exception.getStackTrace());
-                return null;
-            }
-        } else {
-            logger.error("error while delete a existing person");
-            return null;
-        }
+    public void deletePerson(Person person) {
+                personRepository.removeByFirstNameAndLastName(person.getFirstName(), person.getLastName());
     }
-
-
 
 }
