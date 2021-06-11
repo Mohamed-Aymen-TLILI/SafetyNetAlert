@@ -4,6 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,7 +30,7 @@ public class MedicalRecords {
     public MedicalRecords() {
     }
 
-    public MedicalRecords(Long id, String lastName, String firstName, String birthdate, List<String> allergies, List<String> medications, int age) {
+    public MedicalRecords(Long id, String lastName, String firstName, String birthdate, List<String> allergies, List<String> medications, int age) throws ParseException {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -34,7 +38,6 @@ public class MedicalRecords {
         this.allergies = allergies;
         this.medications = medications;
         this.age = age;
-
     }
 
     public String getLastName() {
@@ -94,8 +97,9 @@ public class MedicalRecords {
                 ", birthdate=" + birthdate +
                 ", allergies='" + allergies + '\'' +
                 ", medications='" + medications + '\'' +
-                ", age='" + age + '\'' +
+                ", age='" + this.age + '\'' +
                 '}';
     }
+
 
 }

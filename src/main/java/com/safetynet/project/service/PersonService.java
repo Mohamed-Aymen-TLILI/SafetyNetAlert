@@ -125,7 +125,7 @@ public class PersonService {
 
     /**
      * delete one person if exist
-     *  @param person to update
+     *  @param person to delete
      */
     public void deletePerson(Person person) {
                 personRepository.removeByFirstNameAndLastName(person.getFirstName(), person.getLastName());

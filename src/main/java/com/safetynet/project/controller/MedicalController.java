@@ -3,17 +3,16 @@ package com.safetynet.project.controller;
 
 import com.safetynet.project.model.FunctionalException;
 import com.safetynet.project.model.MedicalRecords;
-import com.safetynet.project.service.FireStationService;
 import com.safetynet.project.service.MedicalRecordService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Component
 @RestController
@@ -26,24 +25,46 @@ public class MedicalController {
     @GetMapping("/medicals")
     public Iterable<MedicalRecords> getAllMedicalRecords(){
 
-        logger.info("Requête Get sur le endpoint 'MedicalRecords' reçue");
+        logger.info("req Get endpoint MedicalRecords");
         Iterable<MedicalRecords> medicalRecordsIterable = medicalRecordService.getAllMedicalRecords();
-        logger.info("Réponse suite à la requête Get sur le endpoint 'MedicalRecords' transmise");
+        logger.info("req next Get endpoint MedicalRecords");
         return medicalRecordsIterable;
     }
 
-    @PostMapping("/medicalrecord")
+    @PostMapping("/medicalRecord")
     public MedicalRecords  addMedicalRecord(@Validated @RequestBody MedicalRecords  medicalRecord) {
-        logger.info("Requête Post sur le endpoint 'medicalRecord' reçue");
+        logger.info("req Post endpoint MedicalRecords");
 
         MedicalRecords  createdMedicalRecord = medicalRecordService.addMedicalRecord(medicalRecord);
 
         if (createdMedicalRecord != null) {
-            logger.info("Réponse suite au Post sur le endpoint 'medicalRecord' envoyée");
+            logger.info("req Post endpoint MedicalRecords sent");
             return createdMedicalRecord;
         } else {
             throw new FunctionalException("medicalRecord.insert.error");
 
         }
     }
+
+    @PutMapping("/medicalRecord")
+    public MedicalRecords updateMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
+        logger.info("req Put  endpoint medicalrecord");
+
+        MedicalRecords updatedMedicalRecord = medicalRecordService.updateMedicalRecord(medicalRecord);
+        if (updatedMedicalRecord != null) {
+            logger.info("req Put  endpoint medicalrecord sent");
+            return updatedMedicalRecord;
+        } else {
+            throw new FunctionalException("medicalRecord.update.error");
+        }
+    }
+
+    @DeleteMapping("/medicalRecord")
+    @Transactional
+    public void deleteMedicalRecord(@RequestBody MedicalRecords medicalRecords) {
+        logger.info("req Delete  endpoint medicalrecord");
+        medicalRecordService.deleteMedicalRecord(medicalRecords);
+    }
+
+
 }

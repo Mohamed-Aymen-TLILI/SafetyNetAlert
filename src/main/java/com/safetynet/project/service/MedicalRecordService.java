@@ -111,6 +111,17 @@ public class MedicalRecordService {
     }
 
 
+    /**
+     * delete medical record by firstName abd lastName
+     * @param medicalRecords
+     * @return null in case have a problem
+     */
+    public void deleteMedicalRecord(MedicalRecords medicalRecords) {
+            medicalRecordRepository.deleteMedicalRecordsByFirstNameAndLastNameAllIgnoreCase(medicalRecords.getFirstName(), medicalRecords.getLastName());
+    }
+
+
+
 
 
     /**
