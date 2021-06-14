@@ -25,19 +25,17 @@ public class MedicalRecords {
     private List<String> allergies;
     @ElementCollection
     private List<String> medications;
-    private int age;
 
     public MedicalRecords() {
     }
 
-    public MedicalRecords(Long id, String lastName, String firstName, String birthdate, List<String> allergies, List<String> medications, int age) throws ParseException {
+    public MedicalRecords(Long id, String lastName, String firstName, String birthdate, List<String> allergies, List<String> medications) throws ParseException {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
         this.birthdate = birthdate;
         this.allergies = allergies;
         this.medications = medications;
-        this.age = age;
     }
 
     public String getLastName() {
@@ -80,15 +78,6 @@ public class MedicalRecords {
         this.medications = medications;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-
     @Override
     public String toString() {
         return "{" +
@@ -97,7 +86,6 @@ public class MedicalRecords {
                 ", birthdate=" + birthdate +
                 ", allergies='" + allergies + '\'' +
                 ", medications='" + medications + '\'' +
-                ", age='" + this.age + '\'' +
                 '}';
     }
 
