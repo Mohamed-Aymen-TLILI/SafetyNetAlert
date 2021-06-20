@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
 
-
+@Data
 @Entity
 public class Person {
 

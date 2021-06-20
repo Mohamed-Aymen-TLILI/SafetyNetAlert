@@ -24,10 +24,10 @@ public class ChildAlertService {
     @Autowired
     MedicalRecordRepository medicalRecordRepository;
 
-    @Autowired(required = false)
+    @Autowired
     ChildAlertDTOMapper childAlertDTOMapper;
 
-    @Autowired(required = false)
+    @Autowired
     FamilyMemberDTOMapper familyMemberDTOMapper;
 
     /**

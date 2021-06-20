@@ -1,13 +1,17 @@
 package com.safetynet.project.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,7 +24,11 @@ public class MedicalRecords {
     private Long id;
     private String lastName;
     private String firstName;
-    private String birthdate;
+    @JsonProperty("birthdate")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate birthdate;
     @ElementCollection
     private List<String> allergies;
     @ElementCollection
@@ -29,7 +37,7 @@ public class MedicalRecords {
     public MedicalRecords() {
     }
 
-    public MedicalRecords(Long id, String lastName, String firstName, String birthdate, List<String> allergies, List<String> medications) throws ParseException {
+    public MedicalRecords(Long id, String lastName, String firstName, LocalDate birthdate, List<String> allergies, List<String> medications) throws ParseException {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -46,7 +54,7 @@ public class MedicalRecords {
         return firstName;
     }
 
-    public String getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
@@ -66,9 +74,10 @@ public class MedicalRecords {
         this.firstName = firstName;
     }
 
-    public void setBirthdate(String birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
+
 
     public void setAllergies(List<String> allergies) {
         this.allergies = allergies;
