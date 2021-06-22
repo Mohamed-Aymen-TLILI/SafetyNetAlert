@@ -65,6 +65,23 @@ public class FireStationPeopleService {
 
 
     /**
+     * @param stationNumber
+     * @return list of phone number for every peron live around fireStation
+     */
+    public List<String> getPhoneListByStationNumber(Integer stationNumber) {
+
+        List<Person> personList = getPersonListByStationNumber(stationNumber);
+
+        if (personList != null) {
+            return personList.stream().filter(p-> p.getPhone() != null && !p.getPhone().isEmpty()).
+                    map(p -> p.getPhone()).distinct().collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
      * list of person live around a station
      *
      * @param stationNumber

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class FireStationController {
 
@@ -31,4 +33,17 @@ public class FireStationController {
         throw new FunctionalException("fireStationPeopleService.getFireStationPeople.error");
         }
     }
+
+    @GetMapping("/phoneAlert")
+    public List<String> getPhoneListByFireStation(@RequestParam Integer firestation){
+        logger.info("req Get endpoint 'phoneAlert' with stationNumber : {"  + firestation.toString() +  "}");
+        List<String> phoneList = fireStationPeopleService.getPhoneListByStationNumber(firestation);;
+        if (phoneList != null) {
+            logger.info("fireStationPeopleService.getPhoneListByStationNumber.success");
+            return phoneList;
+        } else {
+            throw new FunctionalException("fireStationPeopleService.getPhoneListByStationNumber.error");
+        }
+    }
+
 }
