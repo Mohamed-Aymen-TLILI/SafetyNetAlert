@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonInfoService {
@@ -49,6 +50,32 @@ public class PersonInfoService {
             });
 
             return personInfoDTOList;
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * list of person's mail
+     *
+     * @return list of mail
+     */
+    public List<String> getAllEmailsForCity(String city) {
+        if (city != null) {
+            try {
+                List<Person> personList = personRepository.findAllByCityIgnoreCase(city);
+                if (personList != null) {
+                    return personList.stream().filter(p -> p.getEmail() != null && !p.getEmail().isEmpty()).
+                            map(personIterator -> personIterator.getEmail()).distinct().collect(Collectors.toList());
+                } else {
+                    logger.info("return null list");
+                    return null;
+                }
+            } catch (Exception exception) {
+                logger.error("error to get list of person: " + exception.getMessage() + " Stack Trace + " + exception.getStackTrace());
+                return null;
+            }
         } else {
             return null;
         }

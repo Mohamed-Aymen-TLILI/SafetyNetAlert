@@ -35,6 +35,19 @@ public class PersonInfoController {
     }
 
 
+    @GetMapping("/communityEmail")
+    public Iterable<String> getCommunityEmail(@RequestParam String city) {
+        logger.info("Req Get  endpoint 'communityEmail' ");
 
+        List<String> emailList = personInfoService.getAllEmailsForCity(city);
+        if (emailList != null) {
+            logger.info("response Get  endpoint  sent");
+            return emailList;
+        }
+        else
+        {
+            throw new FunctionalException("communityEmail.get.error");
+        }
+    }
 
 }

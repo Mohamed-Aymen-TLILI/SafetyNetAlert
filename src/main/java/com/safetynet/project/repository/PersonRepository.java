@@ -3,7 +3,6 @@ package com.safetynet.project.repository;
 import com.safetynet.project.model.Person;
 import org.springframework.data.repository.CrudRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
