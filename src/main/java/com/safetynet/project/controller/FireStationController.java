@@ -2,7 +2,7 @@ package com.safetynet.project.controller;
 
 import com.safetynet.project.dto.FirePeopleDTO;
 import com.safetynet.project.dto.FireStationPeopleDTO;
-import com.safetynet.project.dto.PeopleCommunity;
+import com.safetynet.project.dto.FloodListDTO;
 import com.safetynet.project.model.FunctionalException;
 import com.safetynet.project.service.FireStationPeopleService;
 import org.apache.logging.log4j.LogManager;
@@ -59,6 +59,20 @@ public class FireStationController {
             return FirePeopleDTOList;
         } else {
             throw new FunctionalException("fire.get.error");
+        }
+    }
+
+    @GetMapping("/flood/stations")
+    public List<FloodListDTO> getFloodInfoByFireStation(@RequestParam List<Integer> stations)
+    {
+        logger.info("req Get endpoint 'flood' ");
+
+        List<FloodListDTO> stationFloodInfoDTOList = fireStationPeopleService.getFloodInfoByStations(stations);
+        if (stationFloodInfoDTOList != null) {
+            logger.info("response Get endpoint 'flood' sent");
+            return stationFloodInfoDTOList;
+        } else {
+            throw new FunctionalException("flood.get.error");
         }
     }
 

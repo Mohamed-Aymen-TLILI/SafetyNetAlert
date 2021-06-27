@@ -1,9 +1,8 @@
 package com.safetynet.project.service;
 
-import com.safetynet.project.dto.FirePeopleDTO;
-import com.safetynet.project.dto.FireStationPeopleDTO;
-import com.safetynet.project.dto.PeopleCommunity;
+import com.safetynet.project.dto.*;
 import com.safetynet.project.mapper.FirePeopleDTOMapper;
+import com.safetynet.project.mapper.FloodDTOMapper;
 import com.safetynet.project.mapper.PeopleCommunityDTOMapper;
 import com.safetynet.project.model.FireStation;
 import com.safetynet.project.model.MedicalRecords;
@@ -16,9 +15,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +37,9 @@ public class FireStationPeopleService {
 
     @Autowired
     private FirePeopleDTOMapper firePeopleDTOMapper;
+
+    @Autowired
+    private FloodDTOMapper floodDTOMapper;
 
     /**
      * return list of people and detail for every person live around a station
@@ -120,6 +120,77 @@ public class FireStationPeopleService {
         }
         return null;
     }
+
+    /**
+     * list of house cover by station
+     *
+     * @param stations numberList
+     * @return list of house cover by station
+     */
+    public List<FloodListDTO> getFloodInfoByStations(List<Integer> stations) {
+        if (stations != null) {
+            try {
+                Map<String, List<Person>> mapListPersonByStationAddress = getPersonsByStationNumber(stations);
+
+                List<FloodListDTO> floodInfoDTOList = new ArrayList<>();
+
+                for (String fireStationAddress : mapListPersonByStationAddress.keySet()) {
+
+                    FloodListDTO stationFloodInfoDTO = new FloodListDTO();
+                    stationFloodInfoDTO.setAddress(fireStationAddress);
+
+                    List<Person> personLinkedToFireStation = mapListPersonByStationAddress.get(fireStationAddress);
+
+                    if (personLinkedToFireStation != null) {
+                        List<FloodDTO> floodInfo = new ArrayList<>();
+
+                        personLinkedToFireStation.forEach(p -> {
+                            Optional<MedicalRecords> optionalMedicalRecord = medicalRecordRepository.findByFirstNameAndLastNameAllIgnoreCase(p.getFirstName(), p.getLastName());
+                            floodInfo.add(floodDTOMapper.convertToFloodDTO(p, optionalMedicalRecord.orElse(null)));
+                        });
+                        stationFloodInfoDTO.setFloodDTOList(floodInfo);
+                        floodInfoDTOList.add(stationFloodInfoDTO);
+                    }
+                }
+                return floodInfoDTOList;
+            } catch (Exception exception) {
+                logger.error("error to get list of person's information for water problem : " + exception.getMessage() + " Stack Trace : " + exception.getStackTrace());
+                return null;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * list of person cover by station
+     * @param stationsNumberList
+     * @return list of person cover by station
+     */
+    private Map<String, List<Person>> getPersonsByStationNumber(List<Integer> stationsNumberList) {
+
+        try {
+            List<FireStation> fireStationList = fireStationRepository.findDistinctByStationIn(stationsNumberList.stream().distinct().collect(Collectors.toList()));
+
+            List<String> addressList = getAddressListFromFireStationList(fireStationList);
+
+            List<Person> personList = personRepository.findAllByAddressInOrderByAddress(addressList);
+
+            Map<String, List<Person>> mapPersonByStationAddress = new HashMap<>();
+
+            addressList.forEach(addressIterator ->
+                    {
+                        List<Person> personListByAdress = personList.stream().filter(person -> person.getAddress().equalsIgnoreCase(addressIterator)).collect(Collectors.toList());
+                        mapPersonByStationAddress.put(addressIterator, personListByAdress);
+                    }
+            );
+            return mapPersonByStationAddress;
+        } catch (Exception exception) {
+            logger.error("error to get list of person cover by FireStation : " + exception.getMessage() + " Stack Trace : " + exception.getStackTrace());
+            return null;
+        }
+    }
+
 
     /**
      * List of FireStationNumber
