@@ -1,6 +1,8 @@
 package com.safetynet.project.controller;
 
+import com.safetynet.project.dto.FirePeopleDTO;
 import com.safetynet.project.dto.FireStationPeopleDTO;
+import com.safetynet.project.dto.PeopleCommunity;
 import com.safetynet.project.model.FunctionalException;
 import com.safetynet.project.service.FireStationPeopleService;
 import org.apache.logging.log4j.LogManager;
@@ -45,5 +47,20 @@ public class FireStationController {
             throw new FunctionalException("fireStationPeopleService.getPhoneListByStationNumber.error");
         }
     }
+
+    @GetMapping("/fire")
+    public List<FirePeopleDTO> getFireInfoByAddress(@RequestParam String address)
+    {
+        logger.info("req Get endpoint  'fire' with adress : " + address);
+
+        List<FirePeopleDTO> FirePeopleDTOList = fireStationPeopleService.getFireInfoByAddress(address);
+        if (FirePeopleDTOList != null) {
+            logger.info("fireStationPeopleService.getFireInfoByAddress : " + address + " sent");
+            return FirePeopleDTOList;
+        } else {
+            throw new FunctionalException("fire.get.error");
+        }
+    }
+
 
 }

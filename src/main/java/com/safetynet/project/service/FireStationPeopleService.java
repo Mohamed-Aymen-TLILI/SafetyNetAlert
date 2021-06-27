@@ -1,7 +1,9 @@
 package com.safetynet.project.service;
 
+import com.safetynet.project.dto.FirePeopleDTO;
 import com.safetynet.project.dto.FireStationPeopleDTO;
 import com.safetynet.project.dto.PeopleCommunity;
+import com.safetynet.project.mapper.FirePeopleDTOMapper;
 import com.safetynet.project.mapper.PeopleCommunityDTOMapper;
 import com.safetynet.project.model.FireStation;
 import com.safetynet.project.model.MedicalRecords;
@@ -35,6 +37,9 @@ public class FireStationPeopleService {
 
     @Autowired
     private PeopleCommunityDTOMapper peopleCommunityDTOMapper;
+
+    @Autowired
+    private FirePeopleDTOMapper firePeopleDTOMapper;
 
     /**
      * return list of people and detail for every person live around a station
@@ -82,6 +87,57 @@ public class FireStationPeopleService {
 
 
     /**
+     * return list of person by address and number of FireStation
+     * @param address
+     * @return list of person by address and number station of FireStation
+     */
+    public List<FirePeopleDTO> getFireInfoByAddress(String address) {
+
+        if (address != null) {
+            try {
+
+                List<FireStation> fireStation = fireStationRepository.findDistinctByAddressIgnoreCase(address);
+                List<Integer> fireStationNumberList = getStationNumberList(fireStation);
+                List<Person> personList = personRepository.findAllByAddressIgnoreCase(address);
+
+                List<FirePeopleDTO> FirePeopleDTOList = new ArrayList<>();
+
+                personList.forEach(p -> {
+                    FirePeopleDTO firePeopleDTO = null;
+                    Optional<MedicalRecords> medicalRecord = medicalRecordRepository.findByFirstNameAndLastNameAllIgnoreCase(p.getFirstName(), p.getLastName());
+                    firePeopleDTO = firePeopleDTOMapper.convertToFirePeopleDTO(p, medicalRecord.orElse(null));
+                    firePeopleDTO.setStationNumberList(fireStationNumberList);
+                    FirePeopleDTOList.add(firePeopleDTO);
+                });
+
+                return FirePeopleDTOList;
+
+            } catch (Exception exception) {
+                logger.error("error to get list of person and station fire around this address: " + exception.getMessage() + " Stack Trace : " + exception.getStackTrace());
+                return null;
+            }
+
+        }
+        return null;
+    }
+
+    /**
+     * List of FireStationNumber
+     *
+     * @param
+     * @return List of FireStationNumber
+     */
+    private List<Integer> getStationNumberList(List<FireStation> fireStationList) {
+        if (fireStationList != null) {
+            return fireStationList.stream().filter(fireStation -> fireStation.getAddress() != null && !fireStation.getAddress().isEmpty())
+                    .map(fireStation -> fireStation.getStation()).collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
      * list of person live around a station
      *
      * @param stationNumber
@@ -121,4 +177,5 @@ public class FireStationPeopleService {
         }
         return addressList.stream().distinct().collect(Collectors.toList());
     }
+
 }
