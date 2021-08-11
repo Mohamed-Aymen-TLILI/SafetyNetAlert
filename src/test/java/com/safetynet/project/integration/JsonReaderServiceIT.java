@@ -27,20 +27,17 @@ public class JsonReaderServiceIT {
     private MedicalRecordService medicalRecordService;
 
     @Test
-    public void CheckLoadedDataFromJsonFile()
-    {
+    public void CheckLoadedDataPeronFromJsonFile() {
         assertThat(personService.getAllPersons()).size().isEqualTo(23);
     }
 
     @Test
-    public void CheckLoadedDataFireStationFromJsonFile()
-    {
+    public void CheckLoadedDataFireStationFromJsonFile() {
         assertThat(fireStationService.getAllStations()).size().isEqualTo(13);
     }
 
     @Test
-    public void CheckLoadedDataMedicalsFromJsonFile()
-    {
+    public void CheckLoadedDataMedicalsFromJsonFile() {
         assertThat(medicalRecordService.getAllMedicalRecords()).size().isEqualTo(23);
     }
 
