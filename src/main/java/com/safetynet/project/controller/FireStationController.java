@@ -22,7 +22,7 @@ public class FireStationController {
     @Autowired
     FireStationPeopleService fireStationPeopleService;
 
-    @GetMapping("/firestaion")
+    @GetMapping("/firestation")
     public FireStationPeopleDTO getFireStationPeople(@RequestParam Integer stationNumber)  {
         logger.info("req Get endpoint 'firestaion' with stationNumber : {" + stationNumber + "}");
 
