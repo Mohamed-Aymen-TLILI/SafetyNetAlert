@@ -26,26 +26,6 @@ public class FireStationCRUD_IT {
     @Autowired
     private FireStationRepository fireStationRepository;
 
-  /*  @Test
-    public void deleteFireStationByAddressAndStationIT() {
-        assertThat(fireStationService.deleteFireStationByAddressAndStation("951 LoneTree RD", 2));
-    }
-
-    @Test
-    public void deleteFireStationByAddressAndStationNonExistingIT() {
-        assertThat(fireStationService.deleteFireStationByAddressAndStation("748 Townings DR", 5));
-    }
-
-    @Test
-    public void deleteFireStationByAddressIT() {
-        assertThat(fireStationService.deleteFireStationByAddress("748 Townings DR"))
-    }
-
-    @Test
-    public void deleteFireStationByAddressNonExistingIT() {
-        verify(fireStationService.deleteFireStationByAddress("Paris city road")).;
-    }
-*/
     @Test
     public void addFireStationIT() {
         FireStation fireStation = new FireStation();
