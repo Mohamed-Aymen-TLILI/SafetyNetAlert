@@ -2,10 +2,13 @@ package com.safetynet.project.service;
 
 import com.safetynet.project.model.FireStation;
 import com.safetynet.project.repository.FireStationRepository;
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,26 +23,23 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest()
+
 public class FireStationServiceTests {
 
-    @MockBean
+    @Mock
     private FireStationRepository fireStationRepositoryMock;
 
-    @Autowired
+
     private FireStationService fireStationService;
 
     private FireStation fireStation;
 
-    @BeforeAll
-    private static void setUpAllTest()
-    {
 
-    }
 
     @BeforeEach
     private void  setUpEachTest() {
-
+        MockitoAnnotations.initMocks(this);
+        this.fireStationService = new FireStationService(this.fireStationRepositoryMock);
         fireStation = new FireStation();
         fireStation.setStation(1);
         fireStation.setAddress("myAddress");

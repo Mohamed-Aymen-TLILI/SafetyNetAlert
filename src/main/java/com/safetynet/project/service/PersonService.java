@@ -14,8 +14,12 @@ import java.util.Optional;
 public class PersonService {
     private static final Logger logger = LogManager.getLogger(PersonService.class);
 
-    @Autowired
+
     private PersonRepository personRepository;
+
+    public PersonService(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     /**
      * Sauvegarde List of person in file data.json

@@ -1,6 +1,9 @@
 package com.safetynet.project.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,6 +11,9 @@ import javax.persistence.*;
 
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person {
 
     private static final Logger logger = LogManager.getLogger(Person.class);
@@ -23,22 +29,6 @@ public class Person {
     private String phone;
     private String email;
 
-    public Person() {
-
-    }
-
-    public Person(Long id, String firstName, String lastName, String address, String city, int zip, String phone, String email, FireStation station, MedicalRecords medicalRecords) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.city = city;
-        this.zip = zip;
-        this.phone = phone;
-        this.email = email;
-
-
-    }
 
 
     public String getLastName() {

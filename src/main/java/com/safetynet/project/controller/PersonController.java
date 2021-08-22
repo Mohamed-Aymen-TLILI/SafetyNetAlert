@@ -22,14 +22,13 @@ public class PersonController {
 
     private static final Logger logger = LogManager.getLogger(PersonController.class);
 
-    @Autowired
     private PersonService personService;
 
-    @Autowired
-    private SafetyNetData safetyNetData;
+    public PersonController(PersonService personService) {
+        this.personService = personService;
+    }
 
-    @Autowired
-    private JsonReaderService jsonReaderService;
+
 
     @GetMapping("/persons")
     public Iterable<Person> getAllPersons() {
@@ -74,14 +73,6 @@ public class PersonController {
     public void deletePerson(@RequestBody Person person) { logger.info("Req Delete  endpoint 'person'");
         personService.deletePerson(person);
 
-    }
-
-    @GetMapping("/save")
-    public void LoadInitialData() throws IOException, ParseException {
-        logger.info("req Get sur le endpoint 'save'");
-        safetyNetData.saveDataFromJsonFile();
-        jsonReaderService.readDataFromJsonFile();
-        logger.info("response Get sur le endpoint 'save'");
     }
 
 }

@@ -14,7 +14,11 @@ import java.util.Optional;
 public class FireStationService {
     private static final Logger logger = LogManager.getLogger(FireStationService.class);
 
-    @Autowired
+    public FireStationService(FireStationRepository fireStationRepository) {
+        this.fireStationRepository = fireStationRepository;
+    }
+
+
     private FireStationRepository fireStationRepository;
 
     /**
