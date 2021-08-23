@@ -1,11 +1,17 @@
 package com.safetynet.project.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class FireStation {
 
     private static final Logger logger = LogManager.getLogger(FireStation.class);
@@ -16,15 +22,6 @@ public class FireStation {
     private String address;
     private int station;
 
-
-    public FireStation() {
-    }
-
-    public FireStation(Long id, String address, int station) {
-        this.id = id;
-        this.address = address;
-        this.station = station;
-    }
 
     public String getAddress() {
         return address;

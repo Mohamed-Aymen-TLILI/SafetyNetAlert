@@ -12,8 +12,8 @@ import java.util.Optional;
 
 @Service
 public class PersonService {
-    private static final Logger logger = LogManager.getLogger(PersonService.class);
 
+    private static final Logger logger = LogManager.getLogger(PersonService.class);
 
     private PersonRepository personRepository;
 

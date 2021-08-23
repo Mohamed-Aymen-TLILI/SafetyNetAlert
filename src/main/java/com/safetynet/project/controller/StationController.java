@@ -17,8 +17,9 @@ public class StationController {
 
     private static final Logger logger = LogManager.getLogger(StationController.class);
 
-    @Autowired
     private FireStationService fireStationService;
+
+    public StationController (FireStationService fireStationService) { this.fireStationService = fireStationService;}
 
     @GetMapping("/firestations")
     public Iterable<FireStation> getAllStations(){
