@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,6 +18,9 @@ import java.time.*;
 import java.util.List;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MedicalRecords {
 
     private static final Logger logger = LogManager.getLogger(MedicalRecords.class);
@@ -34,17 +40,6 @@ public class MedicalRecords {
     @ElementCollection
     private List<String> medications;
 
-    public MedicalRecords() {
-    }
-
-    public MedicalRecords(Long id, String lastName, String firstName, LocalDate birthdate, List<String> allergies, List<String> medications) throws ParseException {
-        this.id = id;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.birthdate = birthdate;
-        this.allergies = allergies;
-        this.medications = medications;
-    }
 
     public String getLastName() {
         return lastName;

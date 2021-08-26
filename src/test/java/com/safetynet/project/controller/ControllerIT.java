@@ -1,64 +1,37 @@
 package com.safetynet.project.controller;
 
 
-import com.safetynet.project.model.Person;
-import com.safetynet.project.repository.PersonRepository;
-import com.safetynet.project.service.PersonService;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@SpringBootTest
+@AutoConfigureMockMvc
 public class ControllerIT {
 
 
-  private PersonController personController;
-
-  private PersonService personService;
-
-  @Mock
-  private PersonRepository personRepository;
-
-  @BeforeEach
-  private void  setUpEachTest() {
-      MockitoAnnotations.initMocks(this);
-      this.personService = new PersonService(personRepository);
-      this.personController = new PersonController(this.personService);
-
-
-  }
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
     void getPersonsTest() throws Exception {
-       Person person = Person.builder().firstName("test").lastName("testName").address("Chelles").build();
-        List<Person> actual = Arrays.asList(person);
-        when(this.personRepository.findAll()).thenReturn(actual);
-        Iterable<Person> allPersons = this.personController.getAllPersons();
-        List<Person> result = new ArrayList<Person>();
-        allPersons.iterator().forEachRemaining(result::add);
-        assertThat(result, hasSize(1));
+
+        this.mockMvc.perform(get("/persons")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(23)));
+
+
     }
 
-  /*  @Test
+    @Test
     void getFireStationTest() throws Exception {
 
         this.mockMvc.perform(get("/firestations")).andDo(print()).andExpect(status().isOk())
@@ -130,5 +103,5 @@ public class ControllerIT {
                 .andExpect(jsonPath("$[4].address", is("112 Steppes Pl")))
                 .andExpect(jsonPath("$[4].floodDTOList", hasSize(3)));
     }
-*/
+
 }

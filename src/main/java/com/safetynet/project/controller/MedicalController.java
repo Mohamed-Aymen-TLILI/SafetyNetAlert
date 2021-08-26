@@ -19,8 +19,11 @@ import java.util.Optional;
 public class MedicalController {
     private static final Logger logger = LogManager.getLogger(MedicalController.class);
 
-    @Autowired
     private MedicalRecordService medicalRecordService;
+
+    public MedicalController (MedicalRecordService medicalRecordService){
+        this.medicalRecordService = medicalRecordService;
+    }
 
     @GetMapping("/medicals")
     public Iterable<MedicalRecords> getAllMedicalRecords(){

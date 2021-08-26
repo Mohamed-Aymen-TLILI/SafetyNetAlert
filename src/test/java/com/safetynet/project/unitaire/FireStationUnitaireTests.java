@@ -45,4 +45,28 @@ public class FireStationUnitaireTests {
         allStations.iterator().forEachRemaining(result::add);
         assertThat(result, hasSize(1));
     }
+
+    @Test
+    void addFireStation() throws Exception {
+        FireStation fireStation = new FireStation();
+        fireStation.setAddress(" 18 Avenue du Maréchal Foch");
+        fireStation.setStation(1);
+        fireStationService.addFireStation(fireStation);
+        List<FireStation> actual = Arrays.asList(fireStation);
+        when(this.fireStationRepository.findAll()).thenReturn(actual);
+        Iterable<FireStation> allStations = this.fireStationController.getAllStations();
+        List<FireStation> result = new ArrayList<FireStation>();
+        allStations.iterator().forEachRemaining(result::add);
+        assertThat(result, hasSize(1));
+    }
+
+    @Test
+    void deleteFireStation() throws Exception {
+        FireStation fireStation = FireStation.builder().station(1).address(" 18 Avenue du Maréchal Foch").build();
+        this.fireStationRepository.deleteByAddressIgnoreCase(" 18 Avenue du Maréchal Foch");
+        Iterable<FireStation> allStations = this.fireStationController.getAllStations();
+        List<FireStation> result = new ArrayList<FireStation>();
+        allStations.iterator().forEachRemaining(result::add);
+        assertThat(result, hasSize(0));
+    }
 }

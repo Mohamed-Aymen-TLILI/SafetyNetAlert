@@ -16,8 +16,11 @@ public class MedicalRecordService {
 
     private static final Logger logger = LogManager.getLogger(MedicalRecordService.class);
 
-    @Autowired
     private MedicalRecordRepository medicalRecordRepository;
+
+    public MedicalRecordService (MedicalRecordRepository medicalRecordRepository){
+        this.medicalRecordRepository = medicalRecordRepository;
+    }
 
     /**
      * Sauvegarde list of medicalRecord
