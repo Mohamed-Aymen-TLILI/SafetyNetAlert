@@ -18,17 +18,21 @@ import java.util.stream.Collectors;
 @Service
 public class ChildAlertService {
 
-    @Autowired
-    PersonRepository personRepository;
 
-    @Autowired
-    MedicalRecordRepository medicalRecordRepository;
+    private PersonRepository personRepository;
 
-    @Autowired
-    ChildAlertDTOMapper childAlertDTOMapper;
+    private MedicalRecordRepository medicalRecordRepository;
 
-    @Autowired
-    FamilyMemberDTOMapper familyMemberDTOMapper;
+    private ChildAlertDTOMapper childAlertDTOMapper;
+
+    private FamilyMemberDTOMapper familyMemberDTOMapper;
+
+    public ChildAlertService (PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, ChildAlertDTOMapper childAlertDTOMapper,FamilyMemberDTOMapper familyMemberDTOMapper){
+        this.childAlertDTOMapper = childAlertDTOMapper;
+        this.personRepository = personRepository;
+        this.familyMemberDTOMapper = familyMemberDTOMapper;
+        this.medicalRecordRepository = medicalRecordRepository;
+    }
 
     /**
      *

@@ -45,4 +45,45 @@ public class PersonUnitaireTests {
         allPersons.iterator().forEachRemaining(result::add);
         assertThat(result, hasSize(1));
     }
+
+    @Test
+    void addPerson() throws Exception {
+        Person person = new Person();
+        person.setAddress("chelles");
+        person.setLastName("test");
+        person.setCity("City");
+        person.setFirstName("testName");
+        person.setEmail("test@test.com");
+        List<Person> actual = Arrays.asList(person);
+        this.personService.addPerson(person);
+        when(this.personRepository.findAll()).thenReturn(actual);
+        Iterable<Person> allPersons = this.personController.getAllPersons();
+        List<Person> result = new ArrayList<Person>();
+        allPersons.iterator().forEachRemaining(result::add);
+        assertThat(result, hasSize(1));
+
+    }
+
+    @Test
+    void deletePerson() throws Exception {
+        Person person = new Person();
+        person.setAddress("chelles");
+        person.setLastName("test");
+        person.setCity("City");
+        person.setFirstName("testName");
+        person.setEmail("test@test.com");
+        this.personService.addPerson(person);
+        List<Person> actual = Arrays.asList(person);
+        when(this.personRepository.findAll()).thenReturn(actual);
+        Iterable<Person> allPersons = this.personController.getAllPersons();
+        List<Person> result = new ArrayList<Person>();
+        allPersons.iterator().forEachRemaining(result::add);
+        assertThat(result, hasSize(1));
+        this.personRepository.removeByFirstNameAndLastName("testName","test");
+        Iterable<Person> persons = this.personController.getAllPersons();
+        List<Person> result1 = new ArrayList<Person>();
+        persons.iterator().forEachRemaining(result::add);
+        assertThat(result1, hasSize(0));
+
+    }
 }

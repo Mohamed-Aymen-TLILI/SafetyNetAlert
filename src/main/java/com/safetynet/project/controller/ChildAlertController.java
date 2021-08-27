@@ -16,9 +16,12 @@ import java.util.List;
 public class ChildAlertController {
 
     private static final Logger logger = LogManager.getLogger(ChildAlertController.class);
-
-    @Autowired
     private ChildAlertService childAlertService;
+
+
+    public ChildAlertController(ChildAlertService childAlertService) {
+        this.childAlertService = childAlertService;
+    }
 
     @GetMapping("/childAlert")
     public List<ChildAlertDTO> getChildAlertList(@RequestParam String address) {
