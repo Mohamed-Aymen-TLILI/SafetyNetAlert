@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PersonUnitaireTests {
@@ -37,7 +39,7 @@ public class PersonUnitaireTests {
 
     @Test
     void getPersonsTest() throws Exception {
-        Person person = Person.builder().firstName("test").lastName("testName").address("Chelles").build();
+        Person person = Person.builder().firstName("test").lastName("testName").address("Chelles").city("City").phone("841-874-7458").build();
         List<Person> actual = Arrays.asList(person);
         when(this.personRepository.findAll()).thenReturn(actual);
         Iterable<Person> allPersons = this.personController.getAllPersons();
@@ -47,43 +49,26 @@ public class PersonUnitaireTests {
     }
 
     @Test
-    void addPerson() throws Exception {
+    void addPersonTest() throws Exception {
         Person person = new Person();
         person.setAddress("chelles");
         person.setLastName("test");
         person.setCity("City");
         person.setFirstName("testName");
         person.setEmail("test@test.com");
-        List<Person> actual = Arrays.asList(person);
+        person.setPhone("841-874-7458");
+        person.setZip(97451);
         this.personService.addPerson(person);
-        when(this.personRepository.findAll()).thenReturn(actual);
-        Iterable<Person> allPersons = this.personController.getAllPersons();
-        List<Person> result = new ArrayList<Person>();
-        allPersons.iterator().forEachRemaining(result::add);
-        assertThat(result, hasSize(1));
+        when(this.personController.addPerson(person)).thenReturn(person);
+        Person response = personController.addPerson(person);
+        assertThat(response.getFirstName()).isEqualTo("testName") ;
 
     }
 
     @Test
-    void deletePerson() throws Exception {
-        Person person = new Person();
-        person.setAddress("chelles");
-        person.setLastName("test");
-        person.setCity("City");
-        person.setFirstName("testName");
-        person.setEmail("test@test.com");
-        this.personService.addPerson(person);
-        List<Person> actual = Arrays.asList(person);
-        when(this.personRepository.findAll()).thenReturn(actual);
-        Iterable<Person> allPersons = this.personController.getAllPersons();
-        List<Person> result = new ArrayList<Person>();
-        allPersons.iterator().forEachRemaining(result::add);
-        assertThat(result, hasSize(1));
-        this.personRepository.removeByFirstNameAndLastName("testName","test");
-        Iterable<Person> persons = this.personController.getAllPersons();
-        List<Person> result1 = new ArrayList<Person>();
-        persons.iterator().forEachRemaining(result::add);
-        assertThat(result1, hasSize(0));
-
+    void deletePersonTest() throws Exception {
+        Person person = Person.builder().firstName("test").lastName("testName").address("Chelles").city("City").phone("841-874-7458").build();
+       this.personController.deletePerson(person);
+       verify(personRepository).removeByFirstNameAndLastName("test", "testName");
     }
 }
