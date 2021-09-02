@@ -8,15 +8,20 @@ import com.safetynet.project.repository.FireStationRepository;
 import com.safetynet.project.service.FireStationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 public class FireStationUnitaireTests {
@@ -62,11 +67,11 @@ public class FireStationUnitaireTests {
 
     @Test
     void deleteFireStation() throws Exception {
-        FireStation fireStation = FireStation.builder().station(1).address(" 18 Avenue du Maréchal Foch").build();
-        this.fireStationRepository.deleteByAddressIgnoreCase(" 18 Avenue du Maréchal Foch");
-        Iterable<FireStation> allStations = this.fireStationController.getAllStations();
-        List<FireStation> result = new ArrayList<FireStation>();
-        allStations.iterator().forEachRemaining(result::add);
-        assertThat(result, hasSize(0));
+        String address = "18 Avenue du Maréchal Foch";
+        FireStation fireStation = FireStation.builder().station(1).address(address).build();
+        List<FireStation> actual = Arrays.asList(fireStation);
+        when(fireStationRepository.findDistinctByAddressIgnoreCase(address)).thenReturn(actual);
+        this.fireStationController.deleteFireStation(address);
+        verify(fireStationRepository).deleteByAddressIgnoreCase(address);
     }
 }

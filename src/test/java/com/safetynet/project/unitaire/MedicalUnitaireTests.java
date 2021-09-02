@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class MedicalUnitaireTests {
 
@@ -70,18 +72,5 @@ public class MedicalUnitaireTests {
 
     }
 
-    @Test
-    void deleteMedicalsRecord() throws Exception {
-        ArrayList allergies = new ArrayList();
-        allergies.add("allergie1");
-        allergies.add("allergies 2");
-        MedicalRecords medicalRecords = MedicalRecords.builder().firstName("test").lastName("testName").allergies(allergies).build();
-        List<MedicalRecords> actual = Arrays.asList(medicalRecords);
-        medicalRecordRepository.deleteMedicalRecordsByFirstNameAndLastNameAllIgnoreCase("test", "testName" );
-        Iterable<MedicalRecords> allMedicalsRecords = this.medicalController.getAllMedicalRecords();
-        List<MedicalRecords> result = new ArrayList<MedicalRecords>();
-        allMedicalsRecords.iterator().forEachRemaining(result::add);
-        assertThat(result, hasSize(0));
-    }
 
 }
