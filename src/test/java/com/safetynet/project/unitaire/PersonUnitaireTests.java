@@ -1,43 +1,28 @@
 package com.safetynet.project.unitaire;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.safetynet.project.controller.PersonController;
-import com.safetynet.project.model.FunctionalException;
 import com.safetynet.project.model.Person;
 import com.safetynet.project.repository.PersonRepository;
 import com.safetynet.project.service.PersonService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BooleanSupplier;
 
 import static org.hamcrest.core.Is.is;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 public class PersonUnitaireTests {
 
@@ -52,7 +37,7 @@ public class PersonUnitaireTests {
 
     @Mock
     private PersonRepository personRepository;
-
+    private static final Logger logger = LogManager.getLogger(PersonService.class);
     String firstnameTest = "Marc";
     String lastnameTest = "Dupont";
 
@@ -105,15 +90,6 @@ public class PersonUnitaireTests {
     }
 
     @Test
-    void addPersonTestWithError() throws Exception {
-        Person person = new Person();
-        this.personService.addPerson(person);
-        FunctionalException message = mock(FunctionalException.class);
-        when(message.getMessage()).thenReturn("person.insert.error");
-        assertThat(message.getMessage(), is("person.insert.error"));
-    }
-
-    @Test
     void deletePersonTest() throws Exception {
         Person person = Person.builder().firstName("test").lastName("testName").address("Chelles").city("City").phone("841-874-7458").build();
        this.personController.deletePerson(person);
@@ -126,7 +102,6 @@ public class PersonUnitaireTests {
        when(personRepository.findByFirstNameAndLastNameAllIgnoreCase(person.getFirstName(), person.getLastName())).thenReturn(Optional.of(person));
        this.personController.updatePerson(person);
        verify(personRepository).save(person);
-
     }
 
 }
