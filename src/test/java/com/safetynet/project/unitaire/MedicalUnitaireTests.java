@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,5 +73,33 @@ public class MedicalUnitaireTests {
 
     }
 
+
+    @Test
+    void updateMedicalsRecordTest() throws Exception {
+        ArrayList allergies = new ArrayList();
+        allergies.add("allergie1");
+        allergies.add("allergies 2");
+        ArrayList allergies2 = new ArrayList();
+        allergies.add("allergie1");
+        allergies.add("allergies 2");
+        MedicalRecords medicalRecords = MedicalRecords.builder().firstName("test").lastName("testName").allergies(allergies).build();
+        when(medicalRecordRepository.findByFirstNameAndLastNameAllIgnoreCase(medicalRecords.getFirstName(), medicalRecords.getLastName())).thenReturn(Optional.of(medicalRecords));
+        this.medicalController.updateMedicalRecord(medicalRecords);
+        verify(medicalRecordRepository).save(medicalRecords);
+    }
+
+    @Test
+    void deleteMedicalRecordTest() throws Exception {
+        ArrayList allergies = new ArrayList();
+        allergies.add("allergie1");
+        allergies.add("allergies 2");
+        ArrayList allergies2 = new ArrayList();
+        allergies.add("allergie1");
+        allergies.add("allergies 2");
+        MedicalRecords medicalRecords = MedicalRecords.builder().firstName("test").lastName("testName").allergies(allergies).build();
+        when(medicalRecordRepository.findByFirstNameAndLastNameAllIgnoreCase(medicalRecords.getFirstName(), medicalRecords.getLastName())).thenReturn(Optional.of(medicalRecords));
+        this.medicalController.deleteMedicalRecord((medicalRecords));
+        verify(medicalRecordRepository).deleteMedicalRecordsByFirstNameAndLastNameAllIgnoreCase(medicalRecords.getFirstName(), medicalRecords.getLastName());
+    }
 
 }
