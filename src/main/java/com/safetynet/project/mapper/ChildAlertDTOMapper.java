@@ -16,6 +16,14 @@ import java.time.LocalDate;
 @Mapper(componentModel = "spring", uses = FamilyMemberDTOMapper.class)
 public abstract class ChildAlertDTOMapper {
 
+    @Autowired
+    public void setDateUtils(DateUtils dateUtils) {
+        this.dateUtils = dateUtils;
+    }
+
+
+    private  DateUtils dateUtils;
+
     @Mappings({
             @Mapping(target="lastName", source="person.lastName"),
             @Mapping(target="firstName", source="person.firstName"),
@@ -23,8 +31,6 @@ public abstract class ChildAlertDTOMapper {
     })
     public abstract ChildAlertDTO convertToChildAlertDTO(Person person, MedicalRecords medicalRecord);
 
-    @Autowired
-    DateUtils dateUtils;
 
     @Named("calculateAge")
     public int getAge(LocalDate birthDate) {

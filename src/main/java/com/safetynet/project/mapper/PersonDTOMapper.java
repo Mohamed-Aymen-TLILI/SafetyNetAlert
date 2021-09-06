@@ -15,8 +15,13 @@ import java.time.LocalDate;
 @Mapper(componentModel = "spring")
 public abstract class PersonDTOMapper {
 
-    @Autowired
-    DateUtils dateUtils;
+     @Autowired
+     public void setDateUtils(DateUtils dateUtils) {
+        this.dateUtils = dateUtils;
+    }
+
+
+    private  DateUtils dateUtils;
 
     @Mappings({
             @Mapping(target="lastname", source="person.lastName"),

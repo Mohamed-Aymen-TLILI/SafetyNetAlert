@@ -17,17 +17,19 @@ public class PersonInfoController {
 
     private static final Logger logger = LogManager.getLogger(PersonInfoController.class);
 
-    @Autowired
+
     private PersonInfoService personInfoService;
 
+    public PersonInfoController (PersonInfoService personInfoService) {this.personInfoService = personInfoService;}
+
     @GetMapping("/personInfo")
-    public List<PersonDTO> getPersonsInfo(@RequestParam String firstName, @RequestParam String lastName) {
+    public List<PersonDTO> getPersonsInfo( @RequestParam String lastName) {
 
-        logger.info("Req Get  endpoint 'personInfo' with firstname : {" + firstName + "} and lastname  {" + lastName + "} ");
+        logger.info("Req Get  endpoint 'personInfo' lastname  {" + lastName + "} ");
 
-        List<PersonDTO> personInfoDTOIterable = personInfoService.getPersonsInfo(firstName, lastName);
+        List<PersonDTO> personInfoDTOIterable = personInfoService.getPersonsInfo(lastName);
         if (personInfoDTOIterable != null) {
-            logger.info("response Get  endpoint 'personInfo' with firstname : {" + firstName + "} and lastname  {" + lastName + "} sent ");
+            logger.info("response Get  endpoint 'personInfo' with lastname  {" + lastName + "} sent ");
             return personInfoDTOIterable;
         } else {
             throw new FunctionalException("personInfo.get.error");

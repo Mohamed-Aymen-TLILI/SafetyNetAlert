@@ -65,7 +65,7 @@ public class PersonInfoServiceTests {
 
     @Test
     public void getPersonsInfoWithNullValues() {
-        assertThat(personInfoService.getPersonsInfo(null, null)).isNull();
+        assertThat(personInfoService.getPersonsInfo( null)).isNull();
         verify(personRepositoryMock, Mockito.times(0)).findAllByLastNameAllIgnoreCase(any(String.class));
         verify(medicalRecordRepositoryMock, Mockito.times(0)).findAllByLastNameAllIgnoreCase(any(String.class));
     }
@@ -134,7 +134,7 @@ public class PersonInfoServiceTests {
         LocalDate nowMockLocalDate = LocalDate.of(2010, 12, 31);
         when(dateUtilsSpy.getNowLocalDate()).thenReturn(nowMockLocalDate);
 
-        List<PersonDTO> personInfosListDTO = personInfoService.getPersonsInfo(person.getFirstName(), person.getLastName());
+        List<PersonDTO> personInfosListDTO = personInfoService.getPersonsInfo(person.getLastName());
 
         assertThat(personInfosListDTO).size().isEqualTo(3);
     }

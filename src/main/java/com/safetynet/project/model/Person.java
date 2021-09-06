@@ -2,14 +2,13 @@ package com.safetynet.project.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
 
-@Data
+
 @Entity
 @Builder
 @AllArgsConstructor

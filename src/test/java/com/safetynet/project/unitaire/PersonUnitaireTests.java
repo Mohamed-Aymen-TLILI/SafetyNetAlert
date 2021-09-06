@@ -38,8 +38,6 @@ public class PersonUnitaireTests {
     @Mock
     private PersonRepository personRepository;
     private static final Logger logger = LogManager.getLogger(PersonService.class);
-    String firstnameTest = "Marc";
-    String lastnameTest = "Dupont";
 
     @BeforeEach
     private void  setUpEachTest() {

@@ -21,23 +21,26 @@ public class PersonInfoService {
 
     private static final Logger logger = LogManager.getLogger(PersonInfoService.class);
 
-    @Autowired
+
     private MedicalRecordRepository medicalRecordRepository;
 
-    @Autowired
     private PersonRepository personRepository;
 
-    @Autowired
     private PersonDTOMapper personDTOMapper;
+
+    public PersonInfoService ( MedicalRecordRepository medicalRecordRepository, PersonRepository personRepository, PersonDTOMapper personDTOMapper){
+        this.medicalRecordRepository = medicalRecordRepository;
+        this.personDTOMapper = personDTOMapper;
+        this.personRepository = personRepository;
+    }
 
     /**
      * list of person's detail
      *
-     * @param firstName
      * @param lastName
      * @return list of person's detail
      */
-    public List<PersonDTO> getPersonsInfo(String firstName, String lastName) {
+    public List<PersonDTO> getPersonsInfo( String lastName) {
         if (lastName != null) {
             List<Person> personList = personRepository.findAllByLastNameAllIgnoreCase(lastName);
             List<MedicalRecords> medicalRecordList = medicalRecordRepository.findAllByLastNameAllIgnoreCase(lastName);
